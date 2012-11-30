@@ -11,9 +11,24 @@
     <groupId>com.github.ansell</groupId>
     <artifactId>abstract-service-loader</artifactId>
     <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>Abstract Service Loader</name>
     <description>Abstract implementation wrapping java.util.ServiceLoader to load services based on META-INF/services entries</description>
     <url>https://github.com/ansell/abstract-service-loader</url>
+
+    <licenses>
+        <license>
+            <name>BSD 2 Clause</name>
+            <url>http://opensource.org/licenses/BSD-2-Clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/ansell/abstract-service-loader.git</connection>
+        <developerConnection>scm:git:git://github.com/ansell/abstract-service-loader.git</developerConnection>
+        <url>https://github.com/ansell/abstract-service-loader</url>
+    </scm>
 
     <developers>
         <developer>
@@ -29,14 +44,6 @@
         <system>GitHub Issues</system>
         <url>https://github.com/ansell/abstract-service-loader/issues</url>
     </issueManagement>
-
-    <licenses>
-        <license>
-            <name>BSD 2 Clause</name>
-            <url>http://opensource.org/licenses/BSD-2-Clause</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
 
     <dependencies>
         <dependency>
@@ -125,10 +132,4 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- Parameters for the Source Code Management system. -->
-    <scm>
-        <connection>scm:git:git://github.com/ansell/abstract-service-loader.git</connection>
-        <developerConnection>scm:git:git://github.com/ansell/abstract-service-loader.git</developerConnection>
-        <url>https://github.com/ansell/abstract-service-loader</url>
-    </scm>
 </project>
