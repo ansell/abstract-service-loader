@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.github.ansell.serviceloader;
+package com.github.ansell.abstractserviceloader;
 
 import java.util.ArrayList;
 import java.util.Collection;
