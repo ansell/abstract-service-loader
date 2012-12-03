@@ -8,7 +8,7 @@
         <version>7</version>
     </parent>
 
-    <groupId>com.github.ansell</groupId>
+    <groupId>com.github.ansell.abstract-service-loader</groupId>
     <artifactId>abstract-service-loader</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
