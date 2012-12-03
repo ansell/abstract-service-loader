@@ -126,7 +126,7 @@ public abstract class AbstractServiceLoader<K, S>
         this.services.clear();
     }
     
-    protected Collection<S> get(final K key)
+    public Collection<S> get(final K key)
     {
         if(key == null)
         {
