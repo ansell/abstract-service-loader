@@ -26,7 +26,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/ansell/abstract-service-loader.git</connection>
-        <developerConnection>scm:git:git://github.com/ansell/abstract-service-loader.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:ansell/abstract-service-loader.git</developerConnection>
         <url>https://github.com/ansell/abstract-service-loader</url>
     </scm>
 
