@@ -102,6 +102,11 @@ public abstract class AbstractServiceLoader<K, S>
         
         final K key = this.getKey(service);
         
+        if(key == null)
+        {
+            throw new NullPointerException("Key for service must not be null");
+        }
+        
         Collection<S> set = this.services.get(key);
         
         if(set == null)
