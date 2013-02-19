@@ -1,156 +1,165 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 
-    <groupId>com.github.ansell.abstract-service-loader</groupId>
-    <artifactId>abstract-service-loader</artifactId>
-    <version>0.2-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <name>Abstract Service Loader</name>
-    <description>Abstract implementation wrapping java.util.ServiceLoader to load services based on META-INF/services entries</description>
-    <url>https://github.com/ansell/abstract-service-loader</url>
+	<groupId>com.github.ansell.abstract-service-loader</groupId>
+	<artifactId>abstract-service-loader</artifactId>
+	<version>0.2-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Abstract Service Loader</name>
+	<description>Abstract implementation wrapping java.util.ServiceLoader to load services based on META-INF/services entries</description>
+	<url>https://github.com/ansell/abstract-service-loader</url>
 
-    <licenses>
-        <license>
-            <name>BSD 2 Clause</name>
-            <url>http://opensource.org/licenses/BSD-2-Clause</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>BSD 2 Clause</name>
+			<url>http://opensource.org/licenses/BSD-2-Clause</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-    <scm>
-        <connection>scm:git:git://github.com/ansell/abstract-service-loader.git</connection>
-        <developerConnection>scm:git:git@github.com:ansell/abstract-service-loader.git</developerConnection>
-        <url>https://github.com/ansell/abstract-service-loader</url>
-    </scm>
+	<scm>
+		<connection>scm:git:git://github.com/ansell/abstract-service-loader.git</connection>
+		<developerConnection>scm:git:git@github.com:ansell/abstract-service-loader.git</developerConnection>
+		<url>https://github.com/ansell/abstract-service-loader</url>
+	</scm>
 
-    <developers>
-        <developer>
-            <id>p_ansell</id>
-            <email>p_ansell@yahoo.com</email>
-            <name>Peter Ansell</name>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<id>p_ansell</id>
+			<email>p_ansell@yahoo.com</email>
+			<name>Peter Ansell</name>
+		</developer>
+	</developers>
 
-    <inceptionYear>2012</inceptionYear>
+	<inceptionYear>2012</inceptionYear>
 
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/ansell/abstract-service-loader/issues</url>
-    </issueManagement>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/ansell/abstract-service-loader/issues</url>
+	</issueManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-      </dependency>
-        <dependency>
-        	<groupId>junit</groupId>
-        	<artifactId>junit</artifactId>
-        	<scope>test</scope>
-        </dependency>
-        <dependency>
-        	<groupId>org.mockito</groupId>
-        	<artifactId>mockito-core</artifactId>
-        	<scope>test</scope>
-        </dependency>
-    </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.2</version>
-            </dependency>
-            <dependency>
-            	<groupId>junit</groupId>
-            	<artifactId>junit</artifactId>
-            	<version>4.11</version>
-            	<scope>test</scope>
-            </dependency>
-            <dependency>
-            	<groupId>org.mockito</groupId>
-            	<artifactId>mockito-core</artifactId>
-            	<version>1.9.5</version>
-            	<scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>1.9.5</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.7.2</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-    <build>
-        <plugins>
-            <!-- We need to explicitly include the Source Plugin to deploy 
-                the sources. -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
+	<build>
+		<plugins>
+			<!-- We need to explicitly include the Source Plugin to deploy the sources. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
 
-                <!-- In the Compiler Plugin we specify the encoding and the 
-                    compiler version. -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                        <encoding>UTF-8</encoding>
-                    </configuration>
-                </plugin>
+				<!-- In the Compiler Plugin we specify the encoding and the compiler 
+					version. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.0</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
 
-                <!-- We need to configure the Source Plugin for deploying 
-                    the sources. -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.2</version>
-                    <executions>
-                        <!-- Attach sources. -->
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+				<!-- We need to configure the Source Plugin for deploying the sources. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
+					<executions>
+						<!-- Attach sources. -->
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
-                <!-- We need to configure the Javadoc Plugin for deploying 
-                    the Javadocs -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.8.1</version>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+				<!-- We need to configure the Javadoc Plugin for deploying the Javadocs -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.8.1</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
-            </plugins>
-        </pluginManagement>
-    </build>
+			</plugins>
+		</pluginManagement>
+	</build>
 
-    <!-- Specify the encoding of the source files. -->
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+	<!-- Specify the encoding of the source files. -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 </project>
