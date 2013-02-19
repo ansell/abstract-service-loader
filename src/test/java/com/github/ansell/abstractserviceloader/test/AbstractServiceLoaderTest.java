@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
 
 /**
- * Abstract test for AbstractServiceLoader implementations.
+ * Abstract test for {@link AbstractServiceLoader} implementations.
  * 
  * @author Peter Ansell p_ansell@yahoo.com
  * 
@@ -45,8 +45,6 @@ public abstract class AbstractServiceLoaderTest<K, S>
     /**
      * This needs to consistently return new objects that all have the key which is returned by
      * {@link #getExpectedKeyForNewService()} for the current test.
-     * 
-     * At most one of these services will be used during each test.
      * 
      * @return A single implementation of a service whose service loader is under test, which at
      *         least implements support for getting the key, based on the internal, protected method

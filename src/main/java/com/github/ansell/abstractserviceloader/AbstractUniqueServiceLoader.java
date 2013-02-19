@@ -9,8 +9,10 @@ import java.util.ServiceConfigurationError;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author Peter Ansell p_ansell@yahoo.com
+ * An extension of the {@link AbstractServiceLoader} class to require the keys for services to be
+ * unique.
  * 
+ * @author Peter Ansell p_ansell@yahoo.com
  */
 public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceLoader<K, S>
 {
@@ -21,7 +23,6 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
     public AbstractUniqueServiceLoader(final Class<S> serviceClass)
     {
         super(serviceClass);
-        // TODO Auto-generated constructor stub
     }
     
     /**
@@ -31,9 +32,15 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
     public AbstractUniqueServiceLoader(final Class<S> serviceClass, final ClassLoader classLoader)
     {
         super(serviceClass, classLoader);
-        // TODO Auto-generated constructor stub
     }
     
+    /**
+     * Extends the contract for the {@link AbstractServiceLoader#add(Object)} method to require that
+     * services have unique keys.
+     * 
+     * @throws ServiceConfigurationError
+     *             If another service is defined with the same key as the service to be added.
+     */
     @Override
     public void add(final S service)
     {
@@ -78,6 +85,14 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
         }
     }
     
+    /**
+     * 
+     * @param key
+     *            The key for the service to get.
+     * @return A single service, or null if there is no service registered with that key.
+     * @throws ServiceConfigurationError
+     *             If there were multiple services registered with the given key.
+     */
     public S getUnique(final K key)
     {
         final Collection<S> results = this.services.get(key);

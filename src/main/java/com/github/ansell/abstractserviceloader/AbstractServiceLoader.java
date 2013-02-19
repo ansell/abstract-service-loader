@@ -173,6 +173,7 @@ public abstract class AbstractServiceLoader<K, S>
      *            A service to return a key for
      * 
      * @return The distinct key for the given service.
+     * @since 0.2
      */
     public abstract K getKey(S service);
     
