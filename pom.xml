@@ -10,7 +10,7 @@
 
 	<groupId>com.github.ansell.abstract-service-loader</groupId>
 	<artifactId>abstract-service-loader</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2</version>
 	<packaging>jar</packaging>
 	<name>Abstract Service Loader</name>
 	<description>Abstract implementation wrapping java.util.ServiceLoader to load services based on META-INF/services entries</description>
@@ -96,6 +96,10 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
 			<!-- We need to explicitly include the Source Plugin to deploy the sources. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -122,6 +126,19 @@
 					</configuration>
 				</plugin>
 
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
 				<!-- We need to configure the Source Plugin for deploying the sources. -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -133,6 +150,12 @@
 							<id>attach-sources</id>
 							<goals>
 								<goal>jar</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>attach-test-sources</id>
+							<goals>
+								<goal>test-jar-no-fork</goal>
 							</goals>
 						</execution>
 					</executions>
