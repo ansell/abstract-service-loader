@@ -3,6 +3,9 @@
  */
 package com.github.ansell.abstractserviceloader.test;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
 
 /**
@@ -12,20 +15,32 @@ import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
 public class DummyServiceRegistryTest extends AbstractServiceLoaderTest<String, DummyService>
 {
     @Override
-    public AbstractServiceLoader<String, DummyService> getNewServiceLoader()
+    public int getExpectedInitialServiceCount()
     {
-        return new DummyServiceRegistry();
+        return 1;
+    }
+    
+    @Override
+    public Collection<String> getExpectedInitialServiceKeys()
+    {
+        return Arrays.asList("DummyServiceImpl");
+    }
+    
+    @Override
+    public String getExpectedKeyForNewService()
+    {
+        return "ManuallyCreatedDummyServiceKey";
     }
     
     @Override
     public DummyService getNewService()
     {
-        return new DummyServiceImpl();
+        return new DummyServiceImpl("ManuallyCreatedDummyServiceKey");
     }
     
     @Override
-    public int getExpectedInitialServiceCount()
+    public AbstractServiceLoader<String, DummyService> getNewServiceLoader()
     {
-        return 1;
+        return new DummyServiceRegistry();
     }
 }

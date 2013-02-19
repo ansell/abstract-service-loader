@@ -18,7 +18,7 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
     /**
      * @param serviceClass
      */
-    public AbstractUniqueServiceLoader(Class<S> serviceClass)
+    public AbstractUniqueServiceLoader(final Class<S> serviceClass)
     {
         super(serviceClass);
         // TODO Auto-generated constructor stub
@@ -28,7 +28,7 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
      * @param serviceClass
      * @param classLoader
      */
-    public AbstractUniqueServiceLoader(Class<S> serviceClass, ClassLoader classLoader)
+    public AbstractUniqueServiceLoader(final Class<S> serviceClass, final ClassLoader classLoader)
     {
         super(serviceClass, classLoader);
         // TODO Auto-generated constructor stub
@@ -78,9 +78,9 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
         }
     }
     
-    public S getUnique(K key)
+    public S getUnique(final K key)
     {
-        Collection<S> results = this.services.get(key);
+        final Collection<S> results = this.services.get(key);
         
         if(results.isEmpty())
         {

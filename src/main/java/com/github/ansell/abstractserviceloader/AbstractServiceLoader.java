@@ -174,7 +174,7 @@ public abstract class AbstractServiceLoader<K, S>
      * 
      * @return The distinct key for the given service.
      */
-    protected abstract K getKey(S service);
+    public abstract K getKey(S service);
     
     /**
      * Gets the keys for the registered services.
@@ -196,20 +196,12 @@ public abstract class AbstractServiceLoader<K, S>
      */
     public boolean has(final K key)
     {
-        Collection<S> collection = this.services.get(key);
+        final Collection<S> collection = this.services.get(key);
         
         return collection != null && !collection.isEmpty();
     }
     
-    public void removeByKey(final K key)
-    {
-        if(this.services.containsKey(key))
-        {
-            this.services.remove(key);
-        }
-    }
-    
-    public void remove(final S service)
+    public synchronized void remove(final S service)
     {
         for(final K nextKey : this.getKeys())
         {
@@ -217,7 +209,20 @@ public abstract class AbstractServiceLoader<K, S>
             if(nextServices != null && nextServices.contains(service))
             {
                 this.services.get(nextKey).remove(service);
+                
+                if(this.services.get(nextKey).isEmpty())
+                {
+                    this.services.remove(nextKey);
+                }
             }
+        }
+    }
+    
+    public synchronized void removeByKey(final K key)
+    {
+        if(this.services.containsKey(key))
+        {
+            this.services.remove(key);
         }
     }
 }

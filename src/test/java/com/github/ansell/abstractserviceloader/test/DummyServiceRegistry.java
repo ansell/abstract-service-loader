@@ -28,13 +28,13 @@ public class DummyServiceRegistry extends AbstractServiceLoader<String, DummySer
      *            A specific class loader to use with {@link ServiceLoader#load(Class, ClassLoader)}
      *            .
      */
-    public DummyServiceRegistry(ClassLoader classLoader)
+    public DummyServiceRegistry(final ClassLoader classLoader)
     {
         super(DummyService.class, classLoader);
     }
     
     @Override
-    protected String getKey(DummyService service)
+    public String getKey(final DummyService service)
     {
         return service.getDummyKey();
     }

@@ -3,13 +3,11 @@
  */
 package com.github.ansell.abstractserviceloader.test;
 
-import static org.junit.Assert.*;
+import java.util.Collection;
+import java.util.Set;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
 
@@ -27,24 +25,40 @@ public abstract class AbstractServiceLoaderTest<K, S>
 {
     /**
      * 
-     * @return A new implementation of {@link AbstractServiceLoader<K, S>} for each invocation.
+     * @return The expected number of services that will be initially loaded after calls to
+     *         {@link #getNewServiceLoader()}.
      */
-    public abstract AbstractServiceLoader<K, S> getNewServiceLoader();
+    public abstract int getExpectedInitialServiceCount();
     
     /**
      * 
-     * @return An implementation of the service whose service loader is under test, which at least
-     *         implements support for getting the key, based on the internal, protected method K
-     *         getKey(S) in AbstractServiceLoader.
+     * @return A collection of keys for the services that will be enabled initially.
+     */
+    public abstract Collection<K> getExpectedInitialServiceKeys();
+    
+    /**
+     * 
+     * @return The expected key for all services returned by {@link #getNewService()}.
+     */
+    public abstract K getExpectedKeyForNewService();
+    
+    /**
+     * This needs to consistently return new objects that all have the key which is returned by
+     * {@link #getExpectedKeyForNewService()} for the current test.
+     * 
+     * At most one of these services will be used during each test.
+     * 
+     * @return A single implementation of a service whose service loader is under test, which at
+     *         least implements support for getting the key, based on the internal, protected method
+     *         K getKey(S) in AbstractServiceLoader.
      */
     public abstract S getNewService();
     
     /**
      * 
-     * @return The expected number of services that will be initially loaded after calls to
-     *         {@link #getNewServiceLoader()}.
+     * @return A new implementation of {@link AbstractServiceLoader<K, S>} for each invocation.
      */
-    public abstract int getExpectedInitialServiceCount();
+    public abstract AbstractServiceLoader<K, S> getNewServiceLoader();
     
     /**
      * Test method for
@@ -53,11 +67,11 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testAdd()
     {
-        AbstractServiceLoader<K, S> serviceLoader = getNewServiceLoader();
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
         
         serviceLoader.clear();
         
-        S service = getNewService();
+        final S service = this.getNewService();
         
         serviceLoader.add(service);
         
@@ -71,20 +85,20 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testClear()
     {
-        AbstractServiceLoader<K, S> serviceLoader = getNewServiceLoader();
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
         
-        int originalCount = serviceLoader.getAll().size();
+        final int originalCount = serviceLoader.getAll().size();
         
-        Assert.assertEquals("Did not find the expected number of initial services", getExpectedInitialServiceCount(),
-                originalCount);
+        Assert.assertEquals("Did not find the expected number of initial services",
+                this.getExpectedInitialServiceCount(), originalCount);
         
         serviceLoader.clear();
         
-        int afterClearCountInitial = serviceLoader.getAll().size();
+        final int afterClearCountInitial = serviceLoader.getAll().size();
         
         Assert.assertEquals("Clear did not remove all initial services", 0, afterClearCountInitial);
         
-        S service = getNewService();
+        final S service = this.getNewService();
         
         serviceLoader.add(service);
         
@@ -92,7 +106,7 @@ public abstract class AbstractServiceLoaderTest<K, S>
         
         serviceLoader.clear();
         
-        int afterClearCountManual = serviceLoader.getAll().size();
+        final int afterClearCountManual = serviceLoader.getAll().size();
         
         Assert.assertEquals("Clear did not remove all manually added services", 0, afterClearCountManual);
         
@@ -105,7 +119,24 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testGet()
     {
-        fail("Not yet implemented"); // TODO
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Collection<K> expectedInitialServiceKeys = this.getExpectedInitialServiceKeys();
+        
+        Assert.assertNotNull("Expected initial service keys was null", expectedInitialServiceKeys);
+        Assert.assertFalse("Expected initial service keys was empty", expectedInitialServiceKeys.isEmpty());
+        
+        for(final K nextInitialKey : expectedInitialServiceKeys)
+        {
+            final Collection<S> collection = serviceLoader.get(nextInitialKey);
+            
+            Assert.assertFalse(collection.isEmpty());
+            
+            for(final S nextService : collection)
+            {
+                Assert.assertNotNull(nextService);
+            }
+        }
     }
     
     /**
@@ -115,7 +146,53 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testGetAll()
     {
-        fail("Not yet implemented"); // TODO
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Collection<K> expectedInitialServiceKeys = this.getExpectedInitialServiceKeys();
+        
+        Assert.assertNotNull("Expected initial service keys was null", expectedInitialServiceKeys);
+        Assert.assertFalse("Expected initial service keys was empty", expectedInitialServiceKeys.isEmpty());
+        
+        final Collection<S> allInitialServices = serviceLoader.getAll();
+        
+        Assert.assertEquals("Did not find the expected number of initial services",
+                this.getExpectedInitialServiceCount(), allInitialServices.size());
+        
+        for(final S nextInitialService : allInitialServices)
+        {
+            final K key = serviceLoader.getKey(nextInitialService);
+            
+            Assert.assertNotNull("Initial service had a null key", key);
+            
+            Assert.assertTrue("Found unexpected initial service key: " + key.toString(),
+                    expectedInitialServiceKeys.contains(key));
+        }
+        
+        serviceLoader.clear();
+        
+        final int afterClearCountInitial = serviceLoader.getAll().size();
+        
+        Assert.assertEquals("Clear did not remove all initial services", 0, afterClearCountInitial);
+        
+        final S service = this.getNewService();
+        
+        serviceLoader.add(service);
+        
+        final Collection<S> manualServices = serviceLoader.getAll();
+        
+        Assert.assertEquals(1, manualServices.size());
+        
+        final K expectedKey = this.getExpectedKeyForNewService();
+        
+        Assert.assertNotNull("Expected key was null", expectedKey);
+        
+        Assert.assertEquals(expectedKey, serviceLoader.getKey(manualServices.iterator().next()));
+        
+        serviceLoader.clear();
+        
+        final int afterClearCountManual = serviceLoader.getAll().size();
+        
+        Assert.assertEquals("Clear did not remove all manually added services", 0, afterClearCountManual);
     }
     
     /**
@@ -126,7 +203,15 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testGetKey()
     {
-        fail("Not yet implemented"); // TODO
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final S service = this.getNewService();
+        
+        final K expectedKey = this.getExpectedKeyForNewService();
+        
+        Assert.assertNotNull("Expected key was null", expectedKey);
+        
+        Assert.assertEquals(expectedKey, serviceLoader.getKey(service));
     }
     
     /**
@@ -136,7 +221,29 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testGetKeys()
     {
-        fail("Not yet implemented"); // TODO
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Collection<K> expectedInitialServiceKeys = this.getExpectedInitialServiceKeys();
+        
+        Assert.assertNotNull("Expected initial service keys was null", expectedInitialServiceKeys);
+        Assert.assertFalse("Expected initial service keys was empty", expectedInitialServiceKeys.isEmpty());
+        
+        final Set<K> keys = serviceLoader.getKeys();
+        
+        Assert.assertEquals("Did not find the expected number of initial service keys", keys.size(),
+                expectedInitialServiceKeys.size());
+        
+        for(final K nextExpectedKey : expectedInitialServiceKeys)
+        {
+            Assert.assertTrue("Could not find one of the expected keys in the service loader",
+                    keys.contains(nextExpectedKey));
+        }
+        
+        for(final K nextKey : keys)
+        {
+            Assert.assertTrue("Could not find one of the service keys in the collection of expected keys",
+                    expectedInitialServiceKeys.contains(nextKey));
+        }
     }
     
     /**
@@ -146,18 +253,29 @@ public abstract class AbstractServiceLoaderTest<K, S>
     @Test
     public final void testHas()
     {
-        fail("Not yet implemented"); // TODO
-    }
-    
-    /**
-     * Test method for
-     * {@link com.github.ansell.abstractserviceloader.AbstractServiceLoader#removeByKey(java.lang.Object)}
-     * .
-     */
-    @Test
-    public final void testRemoveByKey()
-    {
-        fail("Not yet implemented"); // TODO
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Collection<K> expectedInitialServiceKeys = this.getExpectedInitialServiceKeys();
+        
+        Assert.assertNotNull("Expected initial service keys was null", expectedInitialServiceKeys);
+        Assert.assertFalse("Expected initial service keys was empty", expectedInitialServiceKeys.isEmpty());
+        
+        for(final K nextExpectedKey : expectedInitialServiceKeys)
+        {
+            Assert.assertTrue("Could not find one of the expected keys in the service loader",
+                    serviceLoader.has(nextExpectedKey));
+        }
+        
+        final Set<K> keys = serviceLoader.getKeys();
+        
+        Assert.assertEquals("Did not find the expected number of initial service keys", keys.size(),
+                expectedInitialServiceKeys.size());
+        
+        for(final K nextKey : keys)
+        {
+            Assert.assertTrue("Could not find one of the service keys in the collection of expected keys",
+                    serviceLoader.has(nextKey));
+        }
     }
     
     /**
@@ -166,9 +284,118 @@ public abstract class AbstractServiceLoaderTest<K, S>
      * .
      */
     @Test
-    public final void testRemove()
+    public final void testRemoveActual()
     {
-        fail("Not yet implemented"); // TODO
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Set<K> keys = serviceLoader.getKeys();
+        
+        for(final K nextKey : keys)
+        {
+            Assert.assertTrue(serviceLoader.has(nextKey));
+            Assert.assertTrue(serviceLoader.getKeys().contains(nextKey));
+            
+            final Collection<S> services = serviceLoader.get(nextKey);
+            
+            for(final S nextService : services)
+            {
+                serviceLoader.remove(nextService);
+            }
+            
+            Assert.assertFalse(serviceLoader.has(nextKey));
+            Assert.assertFalse(serviceLoader.getKeys().contains(nextKey));
+        }
+        
+        Assert.assertTrue(serviceLoader.getKeys().isEmpty());
+        Assert.assertTrue(serviceLoader.getAll().isEmpty());
+    }
+    
+    /**
+     * Test method for
+     * {@link com.github.ansell.abstractserviceloader.AbstractServiceLoader#removeByKey(java.lang.Object)}
+     * .
+     */
+    @Test
+    public final void testRemoveByKeyActual()
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Set<K> keys = serviceLoader.getKeys();
+        
+        for(final K nextKey : keys)
+        {
+            Assert.assertTrue(serviceLoader.has(nextKey));
+            Assert.assertTrue(serviceLoader.getKeys().contains(nextKey));
+            serviceLoader.removeByKey(nextKey);
+            Assert.assertFalse(serviceLoader.has(nextKey));
+            Assert.assertFalse(serviceLoader.getKeys().contains(nextKey));
+        }
+        
+        Assert.assertTrue(serviceLoader.getKeys().isEmpty());
+        Assert.assertTrue(serviceLoader.getAll().isEmpty());
+    }
+    
+    /**
+     * Test method for
+     * {@link com.github.ansell.abstractserviceloader.AbstractServiceLoader#removeByKey(java.lang.Object)}
+     * .
+     */
+    @Test
+    public final void testRemoveByKeyExpected()
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Collection<K> expectedInitialServiceKeys = this.getExpectedInitialServiceKeys();
+        
+        Assert.assertNotNull("Expected initial service keys was null", expectedInitialServiceKeys);
+        Assert.assertFalse("Expected initial service keys was empty", expectedInitialServiceKeys.isEmpty());
+        
+        for(final K nextKey : expectedInitialServiceKeys)
+        {
+            Assert.assertTrue(serviceLoader.has(nextKey));
+            Assert.assertTrue(serviceLoader.getKeys().contains(nextKey));
+            serviceLoader.removeByKey(nextKey);
+            Assert.assertFalse(serviceLoader.has(nextKey));
+            Assert.assertFalse(serviceLoader.getKeys().contains(nextKey));
+        }
+        
+        Assert.assertTrue(serviceLoader.getKeys().isEmpty());
+        Assert.assertTrue(serviceLoader.getAll().isEmpty());
+    }
+    
+    /**
+     * Test method for
+     * {@link com.github.ansell.abstractserviceloader.AbstractServiceLoader#remove(java.lang.Object)}
+     * .
+     */
+    @Test
+    public final void testRemoveExpected()
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        final Collection<K> expectedInitialServiceKeys = this.getExpectedInitialServiceKeys();
+        
+        Assert.assertNotNull("Expected initial service keys was null", expectedInitialServiceKeys);
+        Assert.assertFalse("Expected initial service keys was empty", expectedInitialServiceKeys.isEmpty());
+        
+        for(final K nextKey : expectedInitialServiceKeys)
+        {
+            Assert.assertTrue(serviceLoader.has(nextKey));
+            Assert.assertTrue(serviceLoader.getKeys().contains(nextKey));
+            
+            final Collection<S> services = serviceLoader.get(nextKey);
+            
+            for(final S nextService : services)
+            {
+                serviceLoader.remove(nextService);
+            }
+            
+            Assert.assertFalse(serviceLoader.has(nextKey));
+            Assert.assertFalse(serviceLoader.getKeys().contains(nextKey));
+        }
+        
+        Assert.assertTrue(serviceLoader.getKeys().isEmpty());
+        Assert.assertTrue(serviceLoader.getAll().isEmpty());
     }
     
 }

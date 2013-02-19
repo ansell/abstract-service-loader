@@ -10,9 +10,21 @@ package com.github.ansell.abstractserviceloader.test;
  */
 public class DummyServiceImpl implements DummyService
 {
+    private final String key;
+    
+    public DummyServiceImpl()
+    {
+        this.key = "DummyServiceImpl";
+    }
+    
+    public DummyServiceImpl(final String newKey)
+    {
+        this.key = newKey;
+    }
+    
     @Override
     public String getDummyKey()
     {
-        return "DummyServiceImpl";
+        return this.key;
     }
 }
