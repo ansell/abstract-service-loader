@@ -177,7 +177,7 @@
 				</plugin>
 
 				<!-- Replace the maven-deploy-plugin with the nexus-staging-maven-plugin 
-					to fix OSSRH-5454 -->
+					to fix OSSRH-5454 if it occurs again 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
@@ -202,10 +202,11 @@
 					<configuration>
 						<serverId>sonatype-nexus-staging</serverId>
 						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<!-- This is the com.github.ansell Staging Profile ID at Sonatype -->
+						< ! - - This is the com.github.ansell Staging Profile ID at Sonatype - - >
 						<stagingProfileId>ad4b52df30f1c</stagingProfileId>
 					</configuration>
 				</plugin>
+				-->
 			</plugins>
 		</pluginManagement>
 	</build>
