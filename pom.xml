@@ -200,7 +200,7 @@
 						</execution>
 					</executions>
 					<configuration>
-						<serverId>sonatype-nexus-releases</serverId>
+						<serverId>sonatype-nexus-staging</serverId>
 						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 						<!-- This is the com.github.ansell Staging Profile ID at Sonatype -->
 						<stagingProfileId>ad4b52df30f1c</stagingProfileId>
