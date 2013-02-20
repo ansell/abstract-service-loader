@@ -10,7 +10,7 @@
 
 	<groupId>com.github.ansell.abstract-service-loader</groupId>
 	<artifactId>abstract-service-loader</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Abstract Service Loader</name>
 	<description>Abstract implementation wrapping java.util.ServiceLoader to load services based on META-INF/services entries</description>
@@ -176,6 +176,18 @@
 					</executions>
 				</plugin>
 
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.3</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>sonatype-nexus-releases</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<!-- This is the com.github.ansell Staging Profile ID at Sonatype -->
+						<stagingProfileId>ad4b52df30f1c</stagingProfileId>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
