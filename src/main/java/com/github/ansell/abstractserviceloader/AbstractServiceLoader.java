@@ -3,6 +3,7 @@
  */
 package com.github.ansell.abstractserviceloader;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,10 +26,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Peter Ansell p_ansell@yahoo.com
  */
-public abstract class AbstractServiceLoader<K, S>
+public abstract class AbstractServiceLoader<K, S> implements Serializable
 {
+    private static final long serialVersionUID = -7240751520278670861L;
+    
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
-    protected final ConcurrentMap<K, Collection<S>> services = new ConcurrentHashMap<K, Collection<S>>();
+    protected final transient ConcurrentMap<K, Collection<S>> services = new ConcurrentHashMap<K, Collection<S>>();
     
     /**
      * Loads instances of the currently available services into a cache in memory.
