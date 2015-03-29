@@ -170,6 +170,19 @@ public abstract class AbstractServiceLoaderTest<K, S>
         }
     }
     
+    /**
+     * Test method for
+     * {@link com.github.ansell.abstractserviceloader.AbstractServiceLoader#get(java.lang.Object)}.
+     */
+    @Test
+    public final void testGetNull()
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        thrown.expect(IllegalArgumentException.class);
+        serviceLoader.get(null);
+    }
+    
     @Test
     public final void testAddNullService() 
     {
