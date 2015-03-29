@@ -43,4 +43,10 @@ public class DummyServiceRegistryTest extends AbstractServiceLoaderTest<String, 
     {
         return new DummyServiceRegistry();
     }
+
+	@Override
+	public DummyService getNewServiceNullKey() 
+	{
+		return new DummyServiceImpl(null);
+	}
 }

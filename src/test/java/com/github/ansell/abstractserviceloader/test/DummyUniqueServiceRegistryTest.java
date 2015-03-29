@@ -43,4 +43,10 @@ public class DummyUniqueServiceRegistryTest extends AbstractUniqueServiceLoaderT
     {
         return new DummyUniqueServiceRegistry();
     }
+
+	@Override
+	public DummyService getNewServiceNullKey() 
+	{
+        return new DummyServiceImpl(null);
+	}
 }

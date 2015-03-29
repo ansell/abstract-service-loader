@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
 
@@ -23,6 +25,9 @@ import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
  */
 public abstract class AbstractServiceLoaderTest<K, S>
 {
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	
     /**
      * 
      * @return The expected number of services that will be initially loaded after calls to
@@ -53,6 +58,15 @@ public abstract class AbstractServiceLoaderTest<K, S>
     public abstract S getNewService();
     
     /**
+     * This needs to consistently return new objects that all have a null key.
+     * 
+     * @return A single implementation of a service whose service loader is under test, which at
+     *         least implements support for getting the key, based on the internal, protected method
+     *         K getKey(S) in AbstractServiceLoader.
+     */
+    public abstract S getNewServiceNullKey();
+    
+    /**
      * 
      * @return A new implementation of {@link AbstractServiceLoader<K, S>} for each invocation.
      */
@@ -76,6 +90,25 @@ public abstract class AbstractServiceLoaderTest<K, S>
         Assert.assertEquals(1, serviceLoader.getAll().size());
     }
     
+    @Test
+    public void testAddDuplicate()
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        serviceLoader.clear();
+        
+        final S service = this.getNewService();
+        
+        serviceLoader.add(service);
+        
+        Assert.assertEquals(1, serviceLoader.getAll().size());
+        
+        final S service2 = this.getNewService();
+        
+        serviceLoader.add(service2);
+        
+        Assert.assertEquals(2, serviceLoader.getAll().size());
+    }
     /**
      * Test method for {@link com.github.ansell.abstractserviceloader.AbstractServiceLoader#clear()}
      * .
@@ -135,6 +168,27 @@ public abstract class AbstractServiceLoaderTest<K, S>
                 Assert.assertNotNull(nextService);
             }
         }
+    }
+    
+    @Test
+    public final void testAddNullService() 
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        thrown.expect(NullPointerException.class);
+        serviceLoader.add(null);
+    }
+    
+    @Test
+    public final void testAddServiceNullKey() 
+    {
+        final AbstractServiceLoader<K, S> serviceLoader = this.getNewServiceLoader();
+        
+        S newServiceNullKey = this.getNewServiceNullKey();
+        Assert.assertNotNull(newServiceNullKey);
+        
+        thrown.expect(NullPointerException.class);
+		serviceLoader.add(newServiceNullKey);
     }
     
     /**

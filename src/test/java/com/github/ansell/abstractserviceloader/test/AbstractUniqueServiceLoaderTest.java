@@ -73,8 +73,9 @@ public abstract class AbstractUniqueServiceLoaderTest<K, S> extends AbstractServ
      * {@link com.github.ansell.abstractserviceloader.AbstractUniqueServiceLoader#add(java.lang.Object)}
      * .
      */
+    @Override
     @Test
-    public final void testAddUniqueMultiple()
+    public final void testAddDuplicate()
     {
         final AbstractUniqueServiceLoader<K, S> serviceLoader = this.getNewUniqueServiceLoader();
         
