@@ -97,7 +97,7 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
     {
         final Collection<S> results = this.services.get(key);
         
-        if(results.isEmpty())
+        if(results == null || results.isEmpty())
         {
             return null;
         }

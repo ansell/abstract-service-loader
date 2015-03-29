@@ -108,7 +108,11 @@ public abstract class AbstractUniqueServiceLoaderTest<K, S> extends AbstractServ
     {
         final AbstractUniqueServiceLoader<K, S> serviceLoader = this.getNewUniqueServiceLoader();
         
+        serviceLoader.clear();
+        
         final K nextKey = this.getExpectedKeyForNewService();
+        
+        Assert.assertNull(serviceLoader.getUnique(nextKey));
         
         final S nextService = this.getNewDuplicateService(nextKey);
         
