@@ -8,3 +8,19 @@ notifications:
     - ansell.peter@gmail.com
 after_success:
   - mvn clean test jacoco:report coveralls:report
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "FqZeFFNL9ObrIIJI1Xd7VGJtb7h8eAOzFvFJIpQWMf9wM1MwkRyJRAVNt4eoZ8zo/ghTdI0vCpmXsiPjdPAwgMocyPHBnXYNT6Yg87WjoIxGxs3xc4dueEyUMUAZw1ObsxeNEjg97c+BI61R8mGe3rY+CK5n/MxaGgn4UMI3PH8="
+
+addons:
+  coverity_scan:
+    project:
+      name: "ansell/abstract-service-loader"
+      description: "Build submitted via Travis CI"
+    notification_email: ansell.peter@gmail.com
+    build_command_prepend: "mvn clean"
+    build_command: "mvn -DskipTests=true compile"
+    branch_pattern: master
