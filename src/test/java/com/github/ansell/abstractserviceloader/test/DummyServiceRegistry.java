@@ -21,7 +21,7 @@ public class DummyServiceRegistry extends AbstractServiceLoader<String, DummySer
      */
     public DummyServiceRegistry()
     {
-        super(DummyService.class, s -> s.getDummyKey());
+        super(DummyService.class, DummyService::getDummyKey);
     }
     
     /**
@@ -31,6 +31,6 @@ public class DummyServiceRegistry extends AbstractServiceLoader<String, DummySer
      */
     public DummyServiceRegistry(final ClassLoader classLoader)
     {
-        super(DummyService.class, classLoader, s -> s.getDummyKey());
+        super(DummyService.class, classLoader, DummyService::getDummyKey);
     }
 }
