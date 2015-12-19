@@ -34,7 +34,7 @@ public abstract class AbstractServiceLoader<K, S> implements Serializable {
 	private static final long serialVersionUID = -7240751520278670861L;
 
 	protected final Logger log = LoggerFactory.getLogger(this.getClass());
-	protected final transient ConcurrentMap<K, Collection<S>> services;
+	protected final transient JDefaultDict<K, Collection<S>> services;
 
 	protected final Function<S, K> keyLambda;
 
@@ -135,19 +135,10 @@ public abstract class AbstractServiceLoader<K, S> implements Serializable {
 
 		Collection<S> set = this.services.get(key);
 
-		if (set == null) {
-			set = Collections.newSetFromMap(new ConcurrentHashMap<S, Boolean>(
-					2, 0.75f, 2));
-
-			final Collection<S> existingSet = this.services.putIfAbsent(key,
-					set);
-
-			if (existingSet != null) {
-				set = existingSet;
-				this.log.info(
-						"Found duplicate service with key: {} service class: {}",
-						key, service.getClass().getName());
-			}
+		if (!set.isEmpty()) {
+			this.log.info(
+					"Found duplicate service with key: {} service class: {}",
+					key, service.getClass().getName());
 		}
 
 		set.add(service);
@@ -217,9 +208,21 @@ public abstract class AbstractServiceLoader<K, S> implements Serializable {
 	 *         key, and false otherwise.
 	 */
 	public boolean has(final K key) {
-		final Collection<S> collection = this.services.get(key);
+		if (this.services.containsKey(key)) {
+			final Collection<S> collection = this.services.get(key);
 
-		return collection != null && !collection.isEmpty();
+			if (collection == null) {
+				return false;
+			}
+
+			if (collection.isEmpty()) {
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public synchronized void remove(final S service) {

@@ -87,9 +87,11 @@ public abstract class AbstractUniqueServiceLoaderTest<K, S> extends AbstractServ
         
         Assert.assertTrue(serviceLoader.has(nextKey));
         
+        final S nextDuplicateService = this.getNewDuplicateService(nextKey);
+        
         try
         {
-            serviceLoader.add(nextService);
+            serviceLoader.add(nextDuplicateService);
             Assert.fail("Did not receive expected exception");
         }
         catch(final ServiceConfigurationError sce)

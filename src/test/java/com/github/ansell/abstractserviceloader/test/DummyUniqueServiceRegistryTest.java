@@ -3,8 +3,8 @@
  */
 package com.github.ansell.abstractserviceloader.test;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 import com.github.ansell.abstractserviceloader.AbstractUniqueServiceLoader;
 
@@ -20,8 +20,8 @@ public class DummyUniqueServiceRegistryTest extends
 	}
 
 	@Override
-	public Collection<String> getExpectedInitialServiceKeys() {
-		return Arrays.asList("DummyServiceImpl");
+	public Set<String> getExpectedInitialServiceKeys() {
+		return Collections.singleton("DummyServiceImpl");
 	}
 
 	@Override

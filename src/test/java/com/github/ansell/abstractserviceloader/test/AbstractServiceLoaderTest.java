@@ -37,10 +37,10 @@ public abstract class AbstractServiceLoaderTest<K, S> {
 
 	/**
 	 * 
-	 * @return A collection of keys for the services that will be enabled
+	 * @return A Set of keys for the services that will be enabled
 	 *         initially.
 	 */
-	public abstract Collection<K> getExpectedInitialServiceKeys();
+	public abstract Set<K> getExpectedInitialServiceKeys();
 
 	/**
 	 * 

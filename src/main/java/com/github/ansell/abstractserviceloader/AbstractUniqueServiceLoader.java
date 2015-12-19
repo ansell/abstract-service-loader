@@ -62,26 +62,13 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
         
         Collection<S> set = this.services.get(key);
         
-        if(set == null)
-        {
-            set = Collections.newSetFromMap(new ConcurrentHashMap<S, Boolean>(2, 0.75f, 2));
-            
-            final Collection<S> existingSet = this.services.putIfAbsent(key, set);
-            
-            if(existingSet != null)
-            {
-                this.log.error("Failing due to a duplicate service with key: {} for class {}", key, service);
-                throw new ServiceConfigurationError("Found a duplicate service with key: " + key + " for class: "
-                        + service);
-            }
-        }
-        else
+        set.add(service);
+        
+        if(set.size() != 1)
         {
             this.log.error("Failing due to a duplicate service with key: {} for class {}", key, service);
             throw new ServiceConfigurationError("Found a duplicate service with key: " + key + " for class: " + service);
         }
-        
-        set.add(service);
         
         if(this.log.isDebugEnabled())
         {

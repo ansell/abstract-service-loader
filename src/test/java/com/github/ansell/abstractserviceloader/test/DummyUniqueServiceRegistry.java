@@ -21,7 +21,7 @@ public class DummyUniqueServiceRegistry extends AbstractUniqueServiceLoader<Stri
      */
     public DummyUniqueServiceRegistry()
     {
-        super(DummyService.class, DummyService::getDummyKey);
+        super(DummyService.class, s -> s.getDummyKey());
     }
     
     /**
@@ -31,6 +31,6 @@ public class DummyUniqueServiceRegistry extends AbstractUniqueServiceLoader<Stri
      */
     public DummyUniqueServiceRegistry(final ClassLoader classLoader)
     {
-        super(DummyService.class, classLoader, DummyService::getDummyKey);
+        super(DummyService.class, classLoader, s -> s.getDummyKey());
     }
 }
