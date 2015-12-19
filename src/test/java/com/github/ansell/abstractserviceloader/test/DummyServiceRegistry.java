@@ -14,13 +14,14 @@ import com.github.ansell.abstractserviceloader.AbstractServiceLoader;
  */
 public class DummyServiceRegistry extends AbstractServiceLoader<String, DummyService>
 {
-    
-    /**
+	private static final long serialVersionUID = 8517213328004036961L;
+
+	/**
      * 
      */
     public DummyServiceRegistry()
     {
-        super(DummyService.class);
+        super(DummyService.class, DummyService::getDummyKey);
     }
     
     /**
@@ -30,13 +31,6 @@ public class DummyServiceRegistry extends AbstractServiceLoader<String, DummySer
      */
     public DummyServiceRegistry(final ClassLoader classLoader)
     {
-        super(DummyService.class, classLoader);
+        super(DummyService.class, classLoader, DummyService::getDummyKey);
     }
-    
-    @Override
-    public String getKey(final DummyService service)
-    {
-        return service.getDummyKey();
-    }
-    
 }

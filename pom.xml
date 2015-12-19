@@ -74,6 +74,10 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.ansell.jdefaultdict</groupId>
+			<artifactId>jdefaultdict</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -99,6 +103,11 @@
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>1.7.13</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.github.ansell.jdefaultdict</groupId>
+				<artifactId>jdefaultdict</artifactId>
+				<version>0.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

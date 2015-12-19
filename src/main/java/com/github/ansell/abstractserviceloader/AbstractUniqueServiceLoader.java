@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.ServiceConfigurationError;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * An extension of the {@link AbstractServiceLoader} class to require the keys for services to be
@@ -16,22 +17,25 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceLoader<K, S>
 {
-    
-    /**
+	private static final long serialVersionUID = -4759708909467622927L;
+
+	/**
      * @param serviceClass
      */
-    public AbstractUniqueServiceLoader(final Class<S> serviceClass)
+    public AbstractUniqueServiceLoader(final Class<S> serviceClass,
+			final Function<S, K> keyLambda)
     {
-        super(serviceClass);
+        super(serviceClass, keyLambda);
     }
     
     /**
      * @param serviceClass
      * @param classLoader
      */
-    public AbstractUniqueServiceLoader(final Class<S> serviceClass, final ClassLoader classLoader)
+    public AbstractUniqueServiceLoader(final Class<S> serviceClass, final ClassLoader classLoader,
+			final Function<S, K> keyLambda)
     {
-        super(serviceClass, classLoader);
+        super(serviceClass, classLoader, keyLambda);
     }
     
     /**
