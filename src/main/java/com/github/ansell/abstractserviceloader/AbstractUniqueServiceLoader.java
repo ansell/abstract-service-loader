@@ -4,9 +4,7 @@
 package com.github.ansell.abstractserviceloader;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.ServiceConfigurationError;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
