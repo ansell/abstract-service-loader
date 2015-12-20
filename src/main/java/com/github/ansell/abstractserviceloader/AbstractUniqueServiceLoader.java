@@ -4,9 +4,8 @@
 package com.github.ansell.abstractserviceloader;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.ServiceConfigurationError;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * An extension of the {@link AbstractServiceLoader} class to require the keys for services to be
@@ -16,22 +15,25 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceLoader<K, S>
 {
-    
-    /**
+	private static final long serialVersionUID = -4759708909467622927L;
+
+	/**
      * @param serviceClass
      */
-    public AbstractUniqueServiceLoader(final Class<S> serviceClass)
+    public AbstractUniqueServiceLoader(final Class<S> serviceClass,
+			final Function<S, K> keyLambda)
     {
-        super(serviceClass);
+        super(serviceClass, keyLambda);
     }
     
     /**
      * @param serviceClass
      * @param classLoader
      */
-    public AbstractUniqueServiceLoader(final Class<S> serviceClass, final ClassLoader classLoader)
+    public AbstractUniqueServiceLoader(final Class<S> serviceClass, final ClassLoader classLoader,
+			final Function<S, K> keyLambda)
     {
-        super(serviceClass, classLoader);
+        super(serviceClass, classLoader, keyLambda);
     }
     
     /**
@@ -58,26 +60,13 @@ public abstract class AbstractUniqueServiceLoader<K, S> extends AbstractServiceL
         
         Collection<S> set = this.services.get(key);
         
-        if(set == null)
-        {
-            set = Collections.newSetFromMap(new ConcurrentHashMap<S, Boolean>(2, 0.75f, 2));
-            
-            final Collection<S> existingSet = this.services.putIfAbsent(key, set);
-            
-            if(existingSet != null)
-            {
-                this.log.error("Failing due to a duplicate service with key: {} for class {}", key, service);
-                throw new ServiceConfigurationError("Found a duplicate service with key: " + key + " for class: "
-                        + service);
-            }
-        }
-        else
+        set.add(service);
+        
+        if(set.size() != 1)
         {
             this.log.error("Failing due to a duplicate service with key: {} for class {}", key, service);
             throw new ServiceConfigurationError("Found a duplicate service with key: " + key + " for class: " + service);
         }
-        
-        set.add(service);
         
         if(this.log.isDebugEnabled())
         {
