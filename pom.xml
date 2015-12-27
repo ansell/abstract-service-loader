@@ -10,7 +10,7 @@
 
 	<groupId>com.github.ansell.abstract-service-loader</groupId>
 	<artifactId>abstract-service-loader</artifactId>
-	<version>0.5</version>
+	<version>0.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Abstract Service Loader</name>
 	<description>Abstract implementation wrapping java.util.ServiceLoader to load services based on META-INF/services entries</description>
